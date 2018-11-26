@@ -5,7 +5,7 @@
 #include "Stepper.h"
 #include <algorithm>
 
-constexpr int MaxMotors = 10;
+constexpr int MaxMotors = 17;
 
 template<unsigned pulseWidth = 5, unsigned accUpdatePeriod = 5000>
 class StepControl : IPitHandler, IDelayHandler
@@ -323,6 +323,10 @@ void StepControl<p, u>::doRotate(int N, float relSpeed)
 
     for (int i = 0; i < N; i++)
     {
+        if (motorList[i] == nullptr) {
+            N = i;
+            break;
+        }
         motorList[i]->setTargetRel(motorList[i]->vMax * fac * motorList[i]->direction);
     }
 
